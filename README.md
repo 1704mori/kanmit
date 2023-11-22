@@ -16,6 +16,12 @@ sudo mv kanmit /usr/local/bin
 
 ### Usage
 
+Set up OpenAI API key:
+
+```bash
+export OPENAI_API_KEY=your-api-key # or add this line to your .bashrc or .zshrc
+```
+
 Generate a commit message using Kanmit:
 
 ```bash
