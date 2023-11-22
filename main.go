@@ -9,6 +9,16 @@ import (
 func main() {
 	logger := NewLogger()
 
+	if !IsGitRepo() {
+		logger.Error("Not a git repository")
+		return
+	}
+
+	if !HasStagedChanges() {
+		logger.Error("No staged changes")
+		return
+	}
+
 	for {
 		diff := GetStagedDiff()
 		prompt := ConstructPrompt(diff)

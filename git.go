@@ -6,6 +6,28 @@ import (
 	"strings"
 )
 
+func IsGitRepo() bool {
+	cmd := exec.Command("git", "rev-parse", "--is-inside-work-tree")
+
+	out, err := cmd.Output()
+	if err != nil {
+		return false
+	}
+
+	return strings.TrimSpace(string(out)) == "true"
+}
+
+func HasStagedChanges() bool {
+	cmd := exec.Command("git", "diff", "--cached", "--name-only")
+
+	out, err := cmd.Output()
+	if err != nil {
+		return false
+	}
+
+	return len(strings.TrimSpace(string(out))) > 0
+}
+
 func GetStagedDiff() []byte {
 	out, _ := exec.Command("git", "diff", "--staged").Output()
 	return out
