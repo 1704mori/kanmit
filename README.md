@@ -4,16 +4,12 @@ Kanmit is a tool that facilitates easy and straightforward commit messages, maki
 
 ## Getting Started
 
-### Clone the Repository
-
-```bash
-git clone https://github.com/1704mori/kanmitto.git
-cd kanmit
-```
-
 ### Build and Install
 
 ```bash
+git clone https://github.com/1704mori/kanmit.git
+cd kanmit
+
 go build -o kanmit
 sudo mv kanmit /usr/local/bin
 ```
