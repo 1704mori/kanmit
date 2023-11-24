@@ -27,6 +27,7 @@ func main() {
 	conventionalCommit := flag.String("conventional-commit", "", "Use conventional commit style")
 	model := flag.String("model", "", "OpenAI API model")
 	listModels := flag.Bool("list-models", false, "List available OpenAI API models")
+	showConfigs := flag.Bool("c", false, "Show current configs")
 
 	flag.Parse()
 
@@ -42,6 +43,17 @@ func main() {
 		for _, k := range keys {
 			fmt.Println(k)
 		}
+
+		return
+	}
+
+	if *showConfigs {
+		var config Config
+		ReadJSONFromFile(configFile, &config)
+
+		logger.Info("Current configs:")
+		fmt.Printf("Conventional commit: %v\n", config.ConventionalCommit)
+		fmt.Printf("Model: %s\n", config.Model)
 
 		return
 	}
@@ -111,5 +123,12 @@ func main() {
 			logger.Info("Invalid option. Quitting without committing...")
 			return
 		}
+	}
+}
+
+func init() {
+	flag.Usage = func() {
+		fmt.Fprintf(flag.CommandLine.Output(), "Usage of %s:\n", os.Args[0])
+		flag.PrintDefaults()
 	}
 }

@@ -29,6 +29,13 @@ cd /path/to/your/repo
 kanmit
 ```
 
+Available commands:
+
+```bash
+kanmit -h # show help
+kanmit -c # show configs
+```
+
 Follow the on-screen prompts to re-generate a commit message, commit the changes, or exit the tool.
 
 ## Contribution
