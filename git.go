@@ -52,25 +52,6 @@ func GetStagedDiff() []byte {
 	return out
 }
 
-// func ConstructPrompt(stagedFiles []byte) string {
-// 	files := strings.Split(string(stagedFiles), "\n")
-// 	prompt := `I have made the following changes and I will provide them to you using the command "git diff --staged".
-// 	Summarize these changes in a commit message with a maximum length of 50 characters.
-// 	NB: The commit message should be in the imperative mood, e.g. "Add feature" rather than "Added feature".
-// 			Also, do not end the commit message with a period neither you should add quotes around it.
-// 	`
-
-// 	for _, file := range files {
-// 		if len(file) == 0 {
-// 			continue
-// 		}
-
-// 		prompt += file + "\n"
-// 	}
-
-// 	return prompt + "\n\nCommit message:"
-// }
-
 type Config struct {
 	ConventionalCommit bool   `json:"conventional-commit"`
 	Model              string `json:"model"`
