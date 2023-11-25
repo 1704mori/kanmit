@@ -1,14 +1,23 @@
-package main
+package config
 
-import (
-	"context"
-	"fmt"
-	"os"
+import "github.com/sashabaranov/go-openai"
 
-	"github.com/sashabaranov/go-openai"
+type Config struct {
+	ConventionalCommit bool   `json:"conventional-commit"`
+	Model              string `json:"model"`
+	Api                string `json:"api"`
+}
+
+type ModelType string
+
+const (
+	Llama2           ModelType = "llama2"
+	Llama2Uncensored ModelType = "llama2-uncensored"
 )
 
-var MODELS = map[string]string{
+var Models = map[ModelType]string{
+	Llama2:                         "llama2",
+	Llama2Uncensored:               "llama2-uncensored",
 	openai.GPT432K0613:             openai.GPT432K0613,
 	openai.GPT432K0314:             openai.GPT432K0314,
 	openai.GPT432K:                 openai.GPT432K,
@@ -40,26 +49,4 @@ var MODELS = map[string]string{
 	openai.GPT3Ada002:              openai.GPT3Ada002,
 	openai.GPT3Babbage:             openai.GPT3Babbage,
 	openai.GPT3Babbage002:          openai.GPT3Babbage002,
-}
-
-func CallOpenaiAPI(prompt string) (string, error) {
-	var config Config
-	ReadJSONFromFile(fmt.Sprintf("%s/.config/kanmit/config.json", os.Getenv("HOME")), &config)
-
-	client := openai.NewClient(os.Getenv("OPENAI_API_KEY"))
-	resp, err := client.CreateChatCompletion(context.Background(), openai.ChatCompletionRequest{
-		Model: MODELS[config.Model],
-		Messages: []openai.ChatCompletionMessage{
-			{
-				Role:    openai.ChatMessageRoleUser,
-				Content: prompt,
-			},
-		},
-	})
-
-	if err != nil {
-		return "", err
-	}
-
-	return resp.Choices[0].Message.Content, nil
 }

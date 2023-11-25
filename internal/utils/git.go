@@ -1,7 +1,8 @@
-package main
+package utils
 
 import (
 	"fmt"
+	config "kanmitto/internal/config"
 	"os"
 	"os/exec"
 	"strings"
@@ -52,13 +53,8 @@ func GetStagedDiff() []byte {
 	return out
 }
 
-type Config struct {
-	ConventionalCommit bool   `json:"conventional-commit"`
-	Model              string `json:"model"`
-}
-
 func ConstructPrompt(stagedFiles []byte) string {
-	var config Config
+	var config config.Config
 	ReadJSONFromFile(fmt.Sprintf("%s/.config/kanmit/config.json", os.Getenv("HOME")), &config)
 
 	files := strings.Split(string(stagedFiles), "\n")
