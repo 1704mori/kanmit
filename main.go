@@ -9,6 +9,7 @@ import (
 	"kanmitto/pkg/rama"
 	"os"
 	"sort"
+	"strings"
 
 	"github.com/eiannone/keyboard"
 )
@@ -128,6 +129,11 @@ func validateFlags(configFile string, logger *utils.Logger) bool {
 	}
 
 	if *service != "" {
+		if !strings.Contains("openai ollama", *service) {
+			logger.Error("Invalid service")
+			return false
+		}
+
 		utils.WriteJSONToFile(configFile, "service", *service)
 		logger.Info(fmt.Sprintf("Using %s service", *service))
 		return false
