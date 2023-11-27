@@ -10,8 +10,6 @@ import (
 	"time"
 )
 
-const RAMA_API = "https://rama.upixels.dev/api"
-
 type RamaResponse struct {
 	Model     string    `json:"model"`
 	CreatedAt time.Time `json:"created_at"`
@@ -26,7 +24,7 @@ func Generate(prompt string) (string, error) {
 
 	response, err := http.MakeRequest[RamaResponse](http.RequestOptions{
 		Method: "POST",
-		URL:    RAMA_API + "/generate",
+		URL:    configuration.OllamaAPI + "/api/generate",
 		Body: map[string]interface{}{
 			"model":  config.Models[config.ModelType(configuration.Model)],
 			"prompt": prompt,

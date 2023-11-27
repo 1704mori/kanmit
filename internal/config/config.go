@@ -5,7 +5,8 @@ import "github.com/sashabaranov/go-openai"
 type Config struct {
 	ConventionalCommit bool   `json:"conventional-commit"`
 	Model              string `json:"model"`
-	Api                string `json:"api"`
+	Service            string `json:"service"`
+	OllamaAPI          string `json:"ollama_api"`
 }
 
 type ModelType string

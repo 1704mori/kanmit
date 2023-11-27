@@ -25,7 +25,7 @@ func main() {
 	if _, err := os.Stat(configFile); os.IsNotExist(err) {
 		os.Create(configFile)
 		configs := map[string]interface{}{
-			"api":                 "openai",
+			"service":             "openai",
 			"model":               "gpt-4",
 			"conventional-commit": false,
 		}
@@ -67,10 +67,10 @@ func main() {
 			commitMsgError error
 		)
 
-		switch configuration.Api {
+		switch configuration.Service {
 		case "openai":
 			commitMsg, commitMsgError = openai.Generate(prompt)
-		case "rama":
+		case "ollama":
 			commitMsg, commitMsgError = rama.Generate(prompt)
 		default:
 			commitMsg, commitMsgError = openai.Generate(prompt)
@@ -112,10 +112,11 @@ func main() {
 
 func validateFlags(configFile string, logger *utils.Logger) bool {
 	conventionalCommit := flag.String("conventional-commit", "", "Use conventional commit style")
-	api := flag.String("api", "", "Set API")
+	service := flag.String("service", "", "Set API")
+	ollamaApi := flag.String("ollama_api", "", "Set Ollama API e.g: http://localhost:11434")
 	model := flag.String("model", "", "OpenAI API model")
-	listModels := flag.Bool("list-models", false, "List available OpenAI API models")
-	listApis := flag.Bool("list-apis", false, "List available APIs")
+	listModels := flag.Bool("models", false, "List available OpenAI API models")
+	listApis := flag.Bool("apis", false, "List available APIs")
 	showConfigs := flag.Bool("c", false, "Show current configs")
 
 	flag.Parse()
@@ -126,9 +127,15 @@ func validateFlags(configFile string, logger *utils.Logger) bool {
 		return false
 	}
 
-	if *api != "" {
-		utils.WriteJSONToFile(configFile, "api", *api)
-		logger.Info(fmt.Sprintf("Using %s API", *api))
+	if *service != "" {
+		utils.WriteJSONToFile(configFile, "service", *service)
+		logger.Info(fmt.Sprintf("Using %s service", *service))
+		return false
+	}
+
+	if *ollamaApi != "" {
+		utils.WriteJSONToFile(configFile, "ollama_api", *ollamaApi)
+		logger.Info(fmt.Sprintf("Ollama API set to %s", *ollamaApi))
 		return false
 	}
 
@@ -161,7 +168,7 @@ func validateFlags(configFile string, logger *utils.Logger) bool {
 
 	if *listApis {
 		logger.Info("Available APIs")
-		fmt.Println("rama")
+		fmt.Println("ollama")
 		fmt.Println("openai")
 	}
 
@@ -171,7 +178,8 @@ func validateFlags(configFile string, logger *utils.Logger) bool {
 
 		logger.Info("Current configs:")
 		fmt.Printf("Conventional commit: %v\n", configuration.ConventionalCommit)
-		fmt.Printf("API: %s\n", configuration.Api)
+		fmt.Printf("Service: %s\n", configuration.Service)
+		fmt.Printf("Ollama API: %s\n", configuration.OllamaAPI)
 		fmt.Printf("Model: %s\n", configuration.Model)
 
 		return false
