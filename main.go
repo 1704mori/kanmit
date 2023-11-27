@@ -113,10 +113,10 @@ func main() {
 func validateFlags(configFile string, logger *utils.Logger) bool {
 	conventionalCommit := flag.String("conventional-commit", "", "Use conventional commit style")
 	service := flag.String("service", "", "Set API")
-	ollamaApi := flag.String("ollama_api", "", "Set Ollama API e.g: http://localhost:11434")
+	ollamaApi := flag.String("ollama-api", "", "Set Ollama API e.g: http://localhost:11434")
 	model := flag.String("model", "", "OpenAI API model")
 	listModels := flag.Bool("models", false, "List available OpenAI API models")
-	listApis := flag.Bool("apis", false, "List available APIs")
+	listSevices := flag.Bool("services", false, "List available APIs")
 	showConfigs := flag.Bool("c", false, "Show current configs")
 
 	flag.Parse()
@@ -166,10 +166,11 @@ func validateFlags(configFile string, logger *utils.Logger) bool {
 		return false
 	}
 
-	if *listApis {
-		logger.Info("Available APIs")
+	if *listSevices {
+		logger.Info("Available services")
 		fmt.Println("ollama")
 		fmt.Println("openai")
+		return false
 	}
 
 	if *showConfigs {
