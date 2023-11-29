@@ -38,8 +38,23 @@ kanmit
 Available commands:
 
 ```bash
-kanmit -h # show help
-kanmit -c # show configs
+-c	Show current configs
+  -conventional-commit string
+    	Use conventional commit style
+  -model string
+    	OpenAI API model
+  -models
+    	List available OpenAI API models
+  -ollama-api string
+    	Set Ollama API e.g: http://localhost:11434
+  -reset
+    	Resets the configuration to its default
+  -service string
+    	Set API
+  -services
+    	List available APIs
+  -v	Show kanmit version
+
 ```
 
 Follow the on-screen prompts to re-generate a commit message, commit the changes, or exit the tool.
