@@ -14,7 +14,7 @@ import (
 	"github.com/eiannone/keyboard"
 )
 
-var Version string = "0.0.0"
+var Version string = "dev"
 
 var configs = map[string]interface{}{
 	"service":             "openai",

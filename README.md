@@ -4,7 +4,13 @@ Kanmit is a tool that facilitates easy and straightforward commit messages, maki
 
 ## Getting Started
 
-### Build and Install
+### Linux
+
+```bash
+curl https://raw.githubusercontent.com/1704mori/kanmit/master/scripts/install.sh | sh
+```
+
+### Build from source
 
 ```bash
 git clone https://github.com/1704mori/kanmit.git
