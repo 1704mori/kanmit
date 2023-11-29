@@ -85,6 +85,10 @@ func main() {
 			return
 		}
 
+		if strings.HasPrefix(`"`, commitMsg) {
+			commitMsg = strings.Trim(commitMsg, `"`)
+		}
+
 		logger.Success(fmt.Sprintf("Suggested commit message: %s", commitMsg))
 		logger.Info("Do you want to generate another commit message or commit the suggested one? g(enerate)/(c)ommit)/(q)uit:")
 

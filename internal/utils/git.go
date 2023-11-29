@@ -12,8 +12,9 @@ var PROMPTS = map[string]string{
 	"simple": `I have made the following changes and I will provide them to you using the command "git diff --staged".
 	Summarize these changes in a commit message with a maximum length of 50 characters.
 	NB: The commit message should be in the imperative mood, e.g. "Add feature" rather than "Added feature".
-			Also, do not end the commit message with a period neither you should add quotes around it.
-	`,
+      If the diff is too short, try to add more details like this: "Add feature to X (method|class|function|etc.)" or "Fix bug in Y (method|class|function|etc.)".
+			Also, do not end the commit message with a period neither you should add quotes around it.`,
+
 	"conventional": `I have made the following changes and I will provide them to you using the command "git diff --staged".
 	Summarize these changes in a commit message using the conventional commit style with a maximum length of 50 characters.
 
@@ -22,6 +23,7 @@ var PROMPTS = map[string]string{
 	E.g. "feat: add new feature" or "fix: fix bug" or with scope "feat(parser): add new parser feature"
 
 	NB: The commit message should be in the imperative mood, e.g. "feat: add feature" rather than "feat: added feature".
+      If the diff is too short, try to add more details like this: "Add feature to X (method|class|function|etc.)" or "Fix bug in Y (method|class|function|etc.)".
 			Also, do not end the commit message with a period neither you should add quotes around it.
 	`,
 }
