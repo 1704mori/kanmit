@@ -18,7 +18,7 @@ cd "$tmp_dir"
 VERSION=$(git rev-parse --short HEAD)
 
 echo "Building kanmit..."
-go build -ldflags "-X main.version=$VERSION" main.go
+go build -ldflags "-X main.Version=$VERSION" main.go
 
 $SUDO mv main /usr/local/bin/kanmit
 
