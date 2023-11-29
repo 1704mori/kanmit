@@ -14,6 +14,8 @@ import (
 	"github.com/eiannone/keyboard"
 )
 
+var Version string = "0.0.0"
+
 var configs = map[string]interface{}{
 	"service":             "openai",
 	"model":               "gpt-4",
@@ -125,6 +127,7 @@ func validateFlags(configFile string, logger *utils.Logger) bool {
 	listSevices := flag.Bool("services", false, "List available APIs")
 	showConfig := flag.Bool("c", false, "Show current configs")
 	resetConfig := flag.Bool("reset", false, "Resets the configuration to its default")
+	version := flag.Bool("v", false, "Show kanmit version")
 
 	flag.Parse()
 
@@ -205,6 +208,11 @@ func validateFlags(configFile string, logger *utils.Logger) bool {
 			utils.WriteJSONToFile(configFile, k, v)
 		}
 
+		return false
+	}
+
+	if *version {
+		logger.Info(fmt.Sprintf("Kanmit version: %s", Version))
 		return false
 	}
 
