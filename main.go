@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"kanmitto/internal/config"
 	"kanmitto/internal/utils"
+	ollama "kanmitto/pkg/ollama"
 	"kanmitto/pkg/openai"
-	"kanmitto/pkg/rama"
 	"os"
 	"sort"
 	"strings"
@@ -73,7 +73,7 @@ func main() {
 		case "openai":
 			commitMsg, commitMsgError = openai.Generate(prompt)
 		case "ollama":
-			commitMsg, commitMsgError = rama.Generate(prompt)
+			commitMsg, commitMsgError = ollama.Generate(prompt)
 		default:
 			commitMsg, commitMsgError = openai.Generate(prompt)
 		}

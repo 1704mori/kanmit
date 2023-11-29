@@ -1,4 +1,4 @@
-package rama
+package ollama
 
 import (
 	"errors"
