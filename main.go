@@ -14,6 +14,12 @@ import (
 	"github.com/eiannone/keyboard"
 )
 
+var configs = map[string]interface{}{
+	"service":             "openai",
+	"model":               "gpt-4",
+	"conventional-commit": false,
+}
+
 func main() {
 	home, _ := os.UserHomeDir()
 	configDir := fmt.Sprintf("%s/.config/kanmit", home)
@@ -25,11 +31,6 @@ func main() {
 
 	if _, err := os.Stat(configFile); os.IsNotExist(err) {
 		os.Create(configFile)
-		configs := map[string]interface{}{
-			"service":             "openai",
-			"model":               "gpt-4",
-			"conventional-commit": false,
-		}
 
 		for k, v := range configs {
 			utils.WriteJSONToFile(configFile, k, v)
@@ -85,7 +86,7 @@ func main() {
 			return
 		}
 
-		if strings.HasPrefix(`"`, commitMsg) {
+		if strings.HasPrefix(commitMsg, `"`) {
 			commitMsg = strings.Trim(commitMsg, `"`)
 		}
 
@@ -122,7 +123,8 @@ func validateFlags(configFile string, logger *utils.Logger) bool {
 	model := flag.String("model", "", "OpenAI API model")
 	listModels := flag.Bool("models", false, "List available OpenAI API models")
 	listSevices := flag.Bool("services", false, "List available APIs")
-	showConfigs := flag.Bool("c", false, "Show current configs")
+	showConfig := flag.Bool("c", false, "Show current configs")
+	resetConfig := flag.Bool("reset", false, "Resets the configuration to its default")
 
 	flag.Parse()
 
@@ -183,7 +185,7 @@ func validateFlags(configFile string, logger *utils.Logger) bool {
 		return false
 	}
 
-	if *showConfigs {
+	if *showConfig {
 		var configuration config.Config
 		utils.ReadJSONFromFile(configFile, &configuration)
 
@@ -192,6 +194,16 @@ func validateFlags(configFile string, logger *utils.Logger) bool {
 		fmt.Printf("Service: %s\n", configuration.Service)
 		fmt.Printf("Ollama API: %s\n", configuration.OllamaAPI)
 		fmt.Printf("Model: %s\n", configuration.Model)
+
+		return false
+	}
+
+	if *resetConfig {
+		os.Remove(configFile)
+
+		for k, v := range configs {
+			utils.WriteJSONToFile(configFile, k, v)
+		}
 
 		return false
 	}
