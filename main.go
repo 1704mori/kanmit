@@ -8,7 +8,6 @@ import (
 	ollama "kanmitto/pkg/ollama"
 	"kanmitto/pkg/openai"
 	"os"
-	"sort"
 	"strings"
 
 	"github.com/eiannone/keyboard"
@@ -59,6 +58,11 @@ func main() {
 
 	var configuration config.Config
 	utils.ReadJSONFromFile(configFile, &configuration)
+
+	if configuration.Service == "ollama" && configuration.OllamaAPI == "" {
+		logger.Error("Ollama's API is empty")
+		return
+	}
 
 	for {
 		diff := utils.GetStagedDiff()
@@ -121,12 +125,12 @@ func main() {
 func validateFlags(configFile string, logger *utils.Logger) bool {
 	conventionalCommit := flag.String("conventional-commit", "", "Use conventional commit style")
 	service := flag.String("service", "", "Set API")
-	ollamaApi := flag.String("ollama-api", "", "Set Ollama API e.g: http://localhost:11434")
 	model := flag.String("model", "", "OpenAI API model")
-	listModels := flag.Bool("models", false, "List available OpenAI API models")
-	listSevices := flag.Bool("services", false, "List available APIs")
+	ollamaApi := flag.String("ollama-api", "", "Set Ollama API e.g: http://localhost:11434")
+	listModels := flag.Bool("list-models", false, "List available OpenAI API models")
+	listSevices := flag.Bool("list-services", false, "List available AI Services")
 	showConfig := flag.Bool("c", false, "Show current configs")
-	resetConfig := flag.Bool("reset", false, "Resets the configuration to its default")
+	resetConfig := flag.Bool("reset-config", false, "Resets the configuration to its default")
 	version := flag.Bool("v", false, "Show kanmit version")
 
 	flag.Parse()
@@ -155,9 +159,12 @@ func validateFlags(configFile string, logger *utils.Logger) bool {
 	}
 
 	if *model != "" {
-		if _, ok := config.Models[config.ModelType(*model)]; !ok {
-			logger.Error(fmt.Sprintf("Invalid model: %s", *model))
-			return false
+		var configuration config.Config
+		if configuration.Service == "openai" {
+			if _, ok := config.Models["openai"][config.ModelType(*model)]; !ok {
+				logger.Error(fmt.Sprintf("Invalid OpenAI model: %s", *model))
+				return false
+			}
 		}
 
 		utils.WriteJSONToFile(configFile, "model", *model)
@@ -166,16 +173,14 @@ func validateFlags(configFile string, logger *utils.Logger) bool {
 	}
 
 	if *listModels {
-		var keys []string
-		for k := range config.Models {
-			keys = append(keys, string(k))
-		}
-
-		sort.Strings(keys)
-
 		logger.Info("Available models:")
-		for _, k := range keys {
-			fmt.Println(k)
+		for provider, models := range config.Models {
+			fmt.Println("Provider:", provider)
+
+			for _, modelName := range models {
+				fmt.Println(modelName)
+			}
+			fmt.Println("-------------------")
 		}
 
 		return false

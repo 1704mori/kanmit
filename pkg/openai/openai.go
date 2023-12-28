@@ -16,7 +16,7 @@ func Generate(prompt string) (string, error) {
 
 	client := openai.NewClient(os.Getenv("OPENAI_API_KEY"))
 	resp, err := client.CreateChatCompletion(context.Background(), openai.ChatCompletionRequest{
-		Model: config.Models[config.ModelType(configuration.Model)],
+		Model: config.Models["openai"][config.ModelType(configuration.Model)],
 		Messages: []openai.ChatCompletionMessage{
 			{
 				Role:    openai.ChatMessageRoleUser,

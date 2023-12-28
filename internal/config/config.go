@@ -11,14 +11,7 @@ type Config struct {
 
 type ModelType string
 
-const (
-	Llama2           ModelType = "llama2"
-	Llama2Uncensored ModelType = "llama2-uncensored"
-)
-
-var Models = map[ModelType]string{
-	Llama2:                         "llama2",
-	Llama2Uncensored:               "llama2-uncensored",
+var openaiModels = map[ModelType]string{
 	openai.GPT432K0613:             openai.GPT432K0613,
 	openai.GPT432K0314:             openai.GPT432K0314,
 	openai.GPT432K:                 openai.GPT432K,
@@ -50,4 +43,13 @@ var Models = map[ModelType]string{
 	openai.GPT3Ada002:              openai.GPT3Ada002,
 	openai.GPT3Babbage:             openai.GPT3Babbage,
 	openai.GPT3Babbage002:          openai.GPT3Babbage002,
+}
+
+var ollamaModels = map[ModelType]string{
+	"info": "we don't know your models yet",
+}
+
+var Models = map[string]map[ModelType]string{
+	"ollama": ollamaModels,
+	"openai": openaiModels,
 }

@@ -26,7 +26,8 @@ func Generate(prompt string) (string, error) {
 		Method: "POST",
 		URL:    configuration.OllamaAPI + "/api/generate",
 		Body: map[string]interface{}{
-			"model":  config.Models[config.ModelType(configuration.Model)],
+			// "model":  config.Models["ollama"][config.ModelType(configuration.Model)],
+			"model":  configuration.Model,
 			"prompt": prompt,
 			"format": "json",
 			"stream": false,
